@@ -10,7 +10,7 @@
 | style            | object         | Add optional inline style to the notification element                                                |
 | onClose          | function       | Called when the notification disappear                                                               |
 | canClose         | bool           | Dismiss notification close functionality                                                             |
-| showProgress     | bool           | Display or not the progress bar below the toast(remaining time)                                      |
+| showProgress     | bool           | Display or not the progress bar below the notification(remaining time)                               |
 | pauseOnHover     | bool           | Keep the timer running or not on hover                                                               |
 | pauseOnFocusLoss | bool           | Pause the timer when the window loses focus                                                          |
 
