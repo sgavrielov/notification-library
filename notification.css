@@ -1,0 +1,97 @@
+.notification-container {
+  position: fixed;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 280px;
+  margin: 16px;
+}
+
+.notification-container[data-position^='top-'] {
+  top: 0;
+}
+
+.notification-container[data-position^='bottom-'] {
+  bottom: 0;
+}
+
+.notification-container[data-position$='-right'] {
+  right: 0;
+}
+
+.notification-container[data-position$='-left'] {
+  left: 0;
+}
+
+.notification-container[data-position$='-center'] {
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.notification {
+  box-sizing: border-box;
+  position: relative;
+  background: white;
+  color: #757575;
+  padding: 16px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-family: sans-serif;
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform 350ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.notification-container[data-position$='-right'] .notification {
+  transform: translateX(110%);
+}
+
+.notification-container[data-position$='-left'] .notification {
+  transform: translateX(-110%);
+}
+
+.notification-container[data-position='top-center'] .notification {
+  transform: translateY(-100vh);
+}
+
+.notification-container[data-position='bottom-center'] .notification {
+  transform: translateY(100vh);
+}
+
+.notification-container .notification.show {
+  transform: translate(0, 0);
+}
+
+.notification.progress::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  width: calc(100% * var(--progress));
+  height: 5px;
+  background: rgb(255, 0, 99);
+  background: linear-gradient(
+    90deg,
+    rgba(255, 0, 99, 1) 0%,
+    rgba(255, 132, 0, 1) 10%,
+    rgba(241, 255, 0, 1) 20%,
+    rgba(82, 255, 0, 1) 30%,
+    rgba(0, 255, 136, 1) 40%,
+    rgba(0, 185, 255, 1) 50%,
+    rgba(0, 5, 255, 1) 60%,
+    rgba(175, 0, 255, 1) 70%,
+    rgba(255, 0, 232, 1) 80%,
+    rgba(255, 0, 138, 1) 90%,
+    rgba(255, 0, 0, 1) 100%
+  );
+}
+
+.notification.can-close::after {
+  content: '\00D7';
+  position: absolute;
+  top: 0;
+  right: 5px;
+  font-size: 22px;
+}
