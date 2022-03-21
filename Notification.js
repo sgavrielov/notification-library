@@ -10,7 +10,7 @@ const DEFAULT_NOTIFICATION_OPTIONS = {
   onClose: () => {},
 };
 
-export default class Notification {
+class Notification {
   #notificationElement;
   #autoCloseInterval;
   #progressInterval;
@@ -99,7 +99,7 @@ export default class Notification {
     if (value) {
       this.#notificationElement.addEventListener('click', () => {
         cancelAnimationFrame(this.#autoCloseInterval);
-        this.#removeBinded;
+        this.remove();
       });
     } else {
       this.#notificationElement.removeEventListener(

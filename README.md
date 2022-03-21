@@ -36,6 +36,12 @@ const notification = new Notification({
 });
 
 setTimeout(() => {
-  notification.update({ style: { color: 'red' } });
-}, 4500);
+  notification.update({
+    style: {
+      background: '#2e344e',
+      color: '#ffffff',
+      transition: 'all 350ms linear',
+    },
+  });
+}, 1500);
 ```
