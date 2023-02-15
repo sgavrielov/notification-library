@@ -8,23 +8,23 @@
   margin: 16px;
 }
 
-.notification-container[data-position^='top-'] {
+.notification-container[data-position^="top-"] {
   top: 0;
 }
 
-.notification-container[data-position^='bottom-'] {
+.notification-container[data-position^="bottom-"] {
   bottom: 0;
 }
 
-.notification-container[data-position$='-right'] {
+.notification-container[data-position$="-right"] {
   right: 0;
 }
 
-.notification-container[data-position$='-left'] {
+.notification-container[data-position$="-left"] {
   left: 0;
 }
 
-.notification-container[data-position$='-center'] {
+.notification-container[data-position$="-center"] {
   left: 50%;
   transform: translateX(-50%);
 }
@@ -38,24 +38,25 @@
   border-radius: 4px;
   font-size: 14px;
   font-family: sans-serif;
+  white-space: pre-line;
   cursor: pointer;
   overflow: hidden;
   transition: transform 350ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
-.notification-container[data-position$='-right'] .notification {
+.notification-container[data-position$="-right"] .notification {
   transform: translateX(110%);
 }
 
-.notification-container[data-position$='-left'] .notification {
+.notification-container[data-position$="-left"] .notification {
   transform: translateX(-110%);
 }
 
-.notification-container[data-position='top-center'] .notification {
+.notification-container[data-position="top-center"] .notification {
   transform: translateY(-100vh);
 }
 
-.notification-container[data-position='bottom-center'] .notification {
+.notification-container[data-position="bottom-center"] .notification {
   transform: translateY(100vh);
 }
 
@@ -64,7 +65,7 @@
 }
 
 .notification.progress::before {
-  content: '';
+  content: "";
   position: absolute;
   bottom: 0;
   right: 0;
@@ -89,7 +90,7 @@
 }
 
 .notification.can-close::after {
-  content: '\00D7';
+  content: "\00D7";
   position: absolute;
   top: 0;
   right: 5px;
