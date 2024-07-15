@@ -5,7 +5,6 @@ const DEFAULT_NOTIFICATION_OPTIONS = {
   showProgress: true,
   pauseOnHover: true,
   pauseOnFocusLoss: true,
-  onClose: () => {},
 };
 
 class Notification {
@@ -191,8 +190,6 @@ class Notification {
 
       container.remove();
     });
-
-    this.onClose();
   }
 }
 

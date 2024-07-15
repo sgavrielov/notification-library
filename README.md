@@ -6,9 +6,8 @@
 | :--------------- | :------------- | :--------------------------------------------------------------------------------------------------- |
 | text             | string         | Notcification message                                                                                |
 | position         | string         | One of top-right, top-center, top-left, bottom-right, bottom-center, bottom-left                     |
-| autoClose        | bool or number | Delay in ms to close the notification. If set to false, the notification needs to be closed manually |
+| autoClose        | bool \| number | Delay in ms to close the notification. If set to false, the notification needs to be closed manually |
 | style            | object         | Add optional inline style to the notification element                                                |
-| onClose          | function       | Called when the notification disappear                                                               |
 | canClose         | bool           | Dismiss notification close functionality                                                             |
 | showProgress     | bool           | Display or not the progress bar below the notification(remaining time)                               |
 | pauseOnHover     | bool           | Keep the timer running or not on hover                                                               |
@@ -16,25 +15,28 @@
 
 ## Default Options
 
-| Options          | Default        |
-| :--------------- | :------------- |
-| text             | empty string   |
-| position         | top-right      |
-| autoClose        | 3000           |
-| style            | empty object   |
-| onClose          | empty function |
-| canClose         | true           |
-| showProgress     | true           |
-| pauseOnHover     | true           |
-| pauseOnFocusLoss | true           |
+| Options          | Default      |
+| :--------------- | :----------- |
+| text             | empty string |
+| position         | top-right    |
+| autoClose        | 3000         |
+| style            | empty object |
+| canClose         | true         |
+| showProgress     | true         |
+| pauseOnHover     | true         |
+| pauseOnFocusLoss | true         |
 
 ## Usages
 
 ```js
+// After the notification has been closed by autoClose or by the user
+// You will not be able to use it again notification variable
+// To use it more than one time make sure that you disable the autoClose & canClose
 const notification = new Notification({
   text: 'Hello World !',
 });
 
+// The update function will run only if the notification still visible
 setTimeout(() => {
   notification.update({
     style: {
