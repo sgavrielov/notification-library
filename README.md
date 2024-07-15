@@ -30,13 +30,13 @@
 
 ```js
 // After the notification has been closed by autoClose or by the user
-// You will not be able to use it again notification variable
-// To use it more than one time make sure that you disable the autoClose & canClose
+// You will not be able to use the notofication variable again
+// To use it more than one time, make sure that you disable the autoClose & canClose
 const notification = new Notification({
   text: 'Hello World !',
 });
 
-// The update function will run only if the notification still visible
+// The update function will run only if the notification is still visible
 setTimeout(() => {
   notification.update({
     style: {
