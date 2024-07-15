@@ -5,8 +5,6 @@ const DEFAULT_NOTIFICATION_OPTIONS = {
   showProgress: true,
   pauseOnHover: true,
   pauseOnFocusLoss: true,
-  pauseOnHover: true,
-  pauseOnFocusLoss: true,
   onClose: () => {},
 };
 
