@@ -1,10 +1,11 @@
 const DEFAULT_NOTIFICATION_OPTIONS = {
-  position: 'top-right',
+  position: "top-right",
   autoClose: 3000,
   canClose: true,
   showProgress: true,
   pauseOnHover: true,
   pauseOnFocusLoss: true,
+  onClose: () => {},
 };
 
 class Notification {
@@ -21,11 +22,11 @@ class Notification {
   #shouldUnPause;
 
   constructor(options) {
-    this.#notificationElement = document.createElement('div');
-    this.#notificationElement.classList.add('notification');
+    this.#notificationElement = document.createElement("div");
+    this.#notificationElement.classList.add("notification");
 
     requestAnimationFrame(() =>
-      this.#notificationElement.classList.add('show')
+      this.#notificationElement.classList.add("show")
     );
 
     this.#removeBinded = this.remove.bind(this);
@@ -34,7 +35,7 @@ class Notification {
     this.#pause = () => (this.#isPaused = true);
 
     this.#visibilityChnage = () => {
-      this.#shouldUnPause = document.visibilityState === 'visible';
+      this.#shouldUnPause = document.visibilityState === "visible";
     };
 
     this.update({ ...DEFAULT_NOTIFICATION_OPTIONS, ...options });
@@ -62,6 +63,7 @@ class Notification {
         this.#timeVisible += time - lastTime;
 
         if (this.#timeVisible >= this.#autoClose) {
+          this.onClose();
           this.remove();
           return;
         }
@@ -92,15 +94,15 @@ class Notification {
   }
 
   set canClose(value) {
-    this.#notificationElement.classList.toggle('can-close', value);
+    this.#notificationElement.classList.toggle("can-close", value);
     if (value) {
-      this.#notificationElement.addEventListener('click', () => {
+      this.#notificationElement.addEventListener("click", () => {
         cancelAnimationFrame(this.#autoCloseInterval);
         this.remove();
       });
     } else {
       this.#notificationElement.removeEventListener(
-        'click',
+        "click",
         this.#removeBinded
       );
     }
@@ -113,8 +115,8 @@ class Notification {
   }
 
   set showProgress(value) {
-    this.#notificationElement.classList.toggle('progress', value);
-    this.#notificationElement.style.setProperty('--progress', 1);
+    this.#notificationElement.classList.toggle("progress", value);
+    this.#notificationElement.style.setProperty("--progress", 1);
 
     if (value) {
       let lastTime;
@@ -128,7 +130,7 @@ class Notification {
 
         if (!this.#isPaused) {
           this.#notificationElement.style.setProperty(
-            '--progress',
+            "--progress",
             1 - this.#timeVisible / this.#autoClose
           );
         }
@@ -142,35 +144,35 @@ class Notification {
   }
 
   set pauseOnHover(value) {
-    this.#notificationElement.classList.toggle('can-close', value);
+    this.#notificationElement.classList.toggle("can-close", value);
     if (value) {
-      this.#notificationElement.addEventListener('mouseover', this.#pause);
-      this.#notificationElement.addEventListener('mouseleave', this.#unpause);
+      this.#notificationElement.addEventListener("mouseover", this.#pause);
+      this.#notificationElement.addEventListener("mouseleave", this.#unpause);
     } else {
-      this.#notificationElement.removeEventListener('mouseover', this.#pause);
+      this.#notificationElement.removeEventListener("mouseover", this.#pause);
       this.#notificationElement.removeEventListener(
-        'mouseleave',
+        "mouseleave",
         this.#unpause
       );
     }
   }
 
   set pauseOnFocusLoss(value) {
-    this.#notificationElement.classList.toggle('can-close', value);
+    this.#notificationElement.classList.toggle("can-close", value);
     if (value) {
-      document.addEventListener('visibilitychange', this.#visibilityChnage);
+      document.addEventListener("visibilitychange", this.#visibilityChnage);
     } else {
-      document.removeEventListener('visibilitychange', this.#visibilityChnage);
+      document.removeEventListener("visibilitychange", this.#visibilityChnage);
     }
   }
 
   update(options) {
-    if (typeof options === 'object') {
+    if (typeof options === "object") {
       Object.entries(options).forEach(([key, value]) => {
         this[key] = value;
       });
     } else {
-      console.error('options must be type of object');
+      console.error("options must be type of object");
       return;
     }
   }
@@ -181,9 +183,9 @@ class Notification {
 
     const container = this.#notificationElement.parentElement;
 
-    this.#notificationElement.classList.remove('show');
+    this.#notificationElement.classList.remove("show");
 
-    this.#notificationElement.addEventListener('transitionend', () => {
+    this.#notificationElement.addEventListener("transitionend", () => {
       this.#notificationElement.remove();
 
       if (container.hasChildNodes()) return;
@@ -194,8 +196,8 @@ class Notification {
 }
 
 function createContainer(position) {
-  const container = document.createElement('div');
-  container.classList.add('notification-container');
+  const container = document.createElement("div");
+  container.classList.add("notification-container");
 
   container.dataset.position = position;
 
