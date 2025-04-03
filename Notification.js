@@ -1,3 +1,14 @@
+/**
+ * Default options for the Notification system.
+ * @typedef {Object} NotificationOptions
+ * @property {string} [position="top-right"] - Position on screen.
+ * @property {number|false} [autoClose=3000] - Time in ms before auto close. False to disable.
+ * @property {boolean} [canClose=true] - Wether user can manually close it.
+ * @property {boolean} [showProgress=true] - Wether to show progress bar.
+ * @property {boolean} [pauseOnHover=true] - Pause timer on hover.
+ * @property {boolean} [pauseOnFocusLoss=true] - Pause timer when tab loses focus.
+ * @property {Function} [onClose]
+ */
 const DEFAULT_NOTIFICATION_OPTIONS = {
   position: "top-right",
   autoClose: 3000,
@@ -8,19 +19,47 @@ const DEFAULT_NOTIFICATION_OPTIONS = {
   onClose: () => {},
 };
 
+/**
+ * Class representing a notification.
+ */
 class Notification {
+  /** @type {HTMLDivElement} The DOM element of the notification */
   #notificationElement;
+
+  /** @type {number} requestAnimationFrame ID for autoClose */
   #autoCloseInterval;
+
+  /** @type {number} requestAnimationFrame ID for progress bar */
   #progressInterval;
-  #removeBinded;
+
+  /** @type {Function} Bound reference to remove method */
+  #removeBind;
+
+  /** @type {number} How long the notification has been visible */
   #timeVisible = 0;
+
+  /** @type {number|false} Auto close time in ms */
   #autoClose;
+
+  /** @type {boolean} Is notification currently paused */
   #isPaused = false;
+
+  /** @type {Function} Unpauses the notification timer */
   #unpause;
+
+  /** @type {Function} Pauses the notification timer */
   #pause;
-  #visibilityChnage;
+
+  /** @type {Function} Handles tab visibility change */
+  #visibilityChange;
+
+  /** @type {boolean} Whether to reset timer after tab becomes visible */
   #shouldUnPause;
 
+  /**
+   * Create a new Notification.
+   * @param {NotificationOptions} options - Configuration options for the notification.
+   */
   constructor(options) {
     this.#notificationElement = document.createElement("div");
     this.#notificationElement.classList.add("notification");
@@ -29,18 +68,22 @@ class Notification {
       this.#notificationElement.classList.add("show")
     );
 
-    this.#removeBinded = this.remove.bind(this);
+    this.#removeBind = this.remove.bind(this);
 
     this.#unpause = () => (this.#isPaused = false);
     this.#pause = () => (this.#isPaused = true);
 
-    this.#visibilityChnage = () => {
+    this.#visibilityChange = () => {
       this.#shouldUnPause = document.visibilityState === "visible";
     };
 
     this.update({ ...DEFAULT_NOTIFICATION_OPTIONS, ...options });
   }
 
+  /**
+   * Set the auto-close timeout.
+   * @param {number|false} value
+   */
   set autoClose(value) {
     this.#autoClose = value;
     this.#timeVisible = 0;
@@ -76,6 +119,10 @@ class Notification {
     this.#autoCloseInterval = requestAnimationFrame(func);
   }
 
+  /**
+   * Set the notification's screen position.
+   * @param {string} value
+   */
   set position(value) {
     const currentContainer = this.#notificationElement.parentElement;
     const selector = `.notification-container[data-position='${value}']`;
@@ -89,10 +136,18 @@ class Notification {
     currentContainer.remove();
   }
 
+  /**
+   * Set the text content of the notification.
+   * @param {string} message
+   */
   set text(message) {
     this.#notificationElement.textContent = message;
   }
 
+  /**
+   * Set whether the notification can be manually closed.
+   * @param {boolean} value
+   */
   set canClose(value) {
     this.#notificationElement.classList.toggle("can-close", value);
     if (value) {
@@ -101,19 +156,24 @@ class Notification {
         this.remove();
       });
     } else {
-      this.#notificationElement.removeEventListener(
-        "click",
-        this.#removeBinded
-      );
+      this.#notificationElement.removeEventListener("click", this.#removeBind);
     }
   }
 
+  /**
+   * Apply custom inline styles.
+   * @param {Object} styles
+   */
   set style(styles) {
     Object.entries(styles).forEach(([key, value]) => {
       this.#notificationElement.style[key] = value;
     });
   }
 
+  /**
+   * Enable or disable progress bar display.
+   * @param {boolean} value
+   */
   set showProgress(value) {
     this.#notificationElement.classList.toggle("progress", value);
     this.#notificationElement.style.setProperty("--progress", 1);
@@ -143,6 +203,10 @@ class Notification {
     }
   }
 
+  /**
+   * Enable or disable pause on hover.
+   * @param {boolean} value
+   */
   set pauseOnHover(value) {
     this.#notificationElement.classList.toggle("can-close", value);
     if (value) {
@@ -157,15 +221,23 @@ class Notification {
     }
   }
 
+  /**
+   * Enable or disable pause on focus loss.
+   * @param {boolean} value
+   */
   set pauseOnFocusLoss(value) {
     this.#notificationElement.classList.toggle("can-close", value);
     if (value) {
-      document.addEventListener("visibilitychange", this.#visibilityChnage);
+      document.addEventListener("visibilitychange", this.#visibilityChange);
     } else {
-      document.removeEventListener("visibilitychange", this.#visibilityChnage);
+      document.removeEventListener("visibilitychange", this.#visibilityChange);
     }
   }
 
+  /**
+   * Update the notification with new options.
+   * @param {NotificationOptions} options
+   */
   update(options) {
     if (typeof options === "object") {
       Object.entries(options).forEach(([key, value]) => {
@@ -177,6 +249,9 @@ class Notification {
     }
   }
 
+  /**
+   * Remove the notification from the DOM.
+   */
   remove() {
     cancelAnimationFrame(this.#autoCloseInterval);
     cancelAnimationFrame(this.#progressInterval);
@@ -195,6 +270,11 @@ class Notification {
   }
 }
 
+/**
+ * Creates a container for notifications if not already existing.
+ * @param {string} position - Position of the notification container.
+ * @returns {HTMLElement} - The created container element.
+ */
 function createContainer(position) {
   const container = document.createElement("div");
   container.classList.add("notification-container");
