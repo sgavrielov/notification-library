@@ -7,7 +7,8 @@
  * @property {boolean} [showProgress=true] - Wether to show progress bar.
  * @property {boolean} [pauseOnHover=true] - Pause timer on hover.
  * @property {boolean} [pauseOnFocusLoss=true] - Pause timer when tab loses focus.
- * @property {Function} [onClose]
+ * @property {Function} [onClose] - Callback triggered on close.
+ * @property {string} [type="default"] - Type of notification (e.g. default, success, error, info).
  */
 const DEFAULT_NOTIFICATION_OPTIONS = {
   position: "top-right",
@@ -17,6 +18,7 @@ const DEFAULT_NOTIFICATION_OPTIONS = {
   pauseOnHover: true,
   pauseOnFocusLoss: true,
   onClose: () => {},
+  type: "default",
 };
 
 /**
@@ -55,6 +57,9 @@ class Notification {
 
   /** @type {boolean} Whether to reset timer after tab becomes visible */
   #shouldUnPause;
+
+  /** @type {string} Defines the type of the notification */
+  #type;
 
   /**
    * Create a new Notification.
@@ -231,6 +236,22 @@ class Notification {
       document.addEventListener("visibilitychange", this.#visibilityChange);
     } else {
       document.removeEventListener("visibilitychange", this.#visibilityChange);
+    }
+  }
+
+  set type(value) {
+    if (typeof value !== "string") {
+      throw new Error("The value must be of type string");
+    }
+    const types = ["default", "success", "error", "info"];
+    this.#notificationElement.classList.remove(...types);
+    if (types.includes(value)) {
+      this.#notificationElement.classList.add(value);
+      this.#type = value;
+    } else {
+      throw new Error(
+        "Type must be one of the following: 'default', 'success', 'error', or 'info'."
+      );
     }
   }
 

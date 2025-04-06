@@ -11,6 +11,7 @@ A lightweight and flexible notification library designed for seamless display an
 - ✅ Progress bar for remaining time
 - ✅ Pause on hover or when the window loses focus
 - ✅ On-close callback function
+- ✅ Notification type support: `default`, `success`, `error`, `info`
 
 ## ⚙️ Configuration Options
 
@@ -25,6 +26,7 @@ A lightweight and flexible notification library designed for seamless display an
 | `showProgress`     | `bool`             | Displays a progress bar indicating remaining time.                                                       |
 | `pauseOnHover`     | `bool`             | Pauses the timer when hovered.                                                                           |
 | `pauseOnFocusLoss` | `bool`             | Pauses the timer when the window loses focus.                                                            |
+| `type`             | `string`           | Type of notification. Supports: `default`, `success`, `error`, `info`.                                   |
 
 ## Default Options
 
@@ -39,6 +41,7 @@ A lightweight and flexible notification library designed for seamless display an
 | `showProgress`     | `true`                      |
 | `pauseOnHover`     | `true`                      |
 | `pauseOnFocusLoss` | `true`                      |
+| `type`             | `default`                   |
 
 ## 📌 Usage Examples
 
@@ -52,6 +55,7 @@ If you don't need to modify the notification after it appears, simply create it:
 new Notification({
   text: "Hello, World!",
   autoClose: 3000,
+  type: "success",
   onClose: () => console.log("DONE"),
 });
 ```
@@ -65,21 +69,21 @@ const notification = new Notification({
   text: "Loading...",
   canClose: false,
   autoClose: false,
+  type: "info",
 });
 
 // Modify the notification after 1.5 seconds
 setTimeout(() => {
   notification.update({
     text: "Process Complete!",
+    type: "success",
     canClose: true,
     autoClose: 3000,
     style: {
-      background: "#2e344e",
-      color: "#ffffff",
       transition: "all 350ms linear",
     },
   });
-}, 5000);
+}, 1500);
 ```
 
 **🔹 Ensure autoClose: false to prevent it from closing before the update.**

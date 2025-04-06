@@ -32,8 +32,6 @@
 .notification {
   box-sizing: border-box;
   position: relative;
-  background: white;
-  color: #757575;
   padding: 16px;
   border-radius: 4px;
   font-size: 14px;
@@ -95,4 +93,24 @@
   top: 0;
   right: 5px;
   font-size: 22px;
+}
+
+.notification.default {
+  background-color: #ffffff;
+  color: #757575;
+}
+
+.notification.success {
+  background-color: #4caf50;
+  color: #ffffff;
+}
+
+.notification.info {
+  background-color: #2196f3;
+  color: #ffffff;
+}
+
+.notification.error {
+  background-color: #f44336;
+  color: #ffffff;
 }
